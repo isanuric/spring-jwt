@@ -64,8 +64,8 @@ public class BarAuthentication extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(
-            HttpServletRequest req,
-            HttpServletResponse res,
+            HttpServletRequest request,
+            HttpServletResponse response,
             FilterChain chain,
             Authentication auth) {
 

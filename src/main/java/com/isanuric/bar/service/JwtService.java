@@ -14,10 +14,14 @@ import org.jose4j.lang.JoseException;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 public class JwtService {
 
     private final static Logger logger = LoggerFactory.getLogger(JwtService.class);
+
+    @Value("${jwt.key}")
+    private String jwtKey;
 
     @SuppressWarnings("unchecked")
     public String buildRequestToken(String user) {
@@ -27,7 +31,7 @@ public class JwtService {
         jws.setPayload(payload.toJSONString());
 
         // Set the verification key
-        HmacKey key = new HmacKey(Base64.decode("EWGTENJ7FGBVFDWE45T6KM6VF196H6ZAJ7FGBVFDWE45T6KM6VF196H6ZA"));
+        HmacKey key = new HmacKey(Base64.decode(jwtKey));
         logger.debug("key: {}", key);
         jws.setKey(key);
 
