@@ -1,4 +1,4 @@
-//package com.isanuric.bar.user;
+//package com.isanuric.bar.ldap;
 
 //import org.springframework.data.jpa.repository.JpaRepository;
 
