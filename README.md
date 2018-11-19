@@ -1,4 +1,5 @@
 # spring-jwt-ldap
-Spring Boot
-JWT
-LDAP
+* REST
+* Spring Boot
+* JWT
+* LDAP
