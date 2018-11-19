@@ -22,16 +22,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * Project: bar
  * Created by ehsan.salmani@ic-consult.de on 11/11/2018.
  */
-public class BarAuthentication extends UsernamePasswordAuthenticationFilter {
+public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final static Logger logger = LoggerFactory.getLogger(BarAuthentication.class);
+    private final static Logger logger = LoggerFactory.getLogger(CustomAuthenticationFilter.class);
 
     @Autowired
     private JwtService jwtService;
 
     private AuthenticationManager authenticationManager;
 
-    public BarAuthentication(AuthenticationManager authenticationManager) {
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
@@ -49,12 +49,10 @@ public class BarAuthentication extends UsernamePasswordAuthenticationFilter {
 
         try {
             User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+            logger.debug("user: {}", user);
 
             return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            user.getUsername(),
-                            user.getPassword(),
-                            new ArrayList<>())
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), new ArrayList<>())
             );
 
         } catch (IOException e) {
@@ -70,7 +68,8 @@ public class BarAuthentication extends UsernamePasswordAuthenticationFilter {
             Authentication auth) {
 
         logger.debug("start successfulAuthentication");
-        jwtService.buildRequestToken(SecurityContextHolder.getContext().getAuthentication().getName());
-
+        response.addHeader(
+                "Authorization",
+                "Bearer " + jwtService.buildRequestToken(SecurityContextHolder.getContext().getAuthentication().getName()));
     }
 }
