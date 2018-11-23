@@ -12,7 +12,6 @@ import org.jose4j.json.internal.json_simple.JSONObject;
 import org.jose4j.json.internal.json_simple.parser.JSONParser;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
-import org.jose4j.jwt.consumer.InvalidJwtSignatureException;
 import org.jose4j.keys.HmacKey;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;

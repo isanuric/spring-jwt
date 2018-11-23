@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class JwtServiceTest extends TestBase {
 
     @Test
-    public void buildRequestBody() throws JoseException {
+    public void buildRequestBody() {
         String token = jwtService.buildRequestToken(TESTUSER_01);
         assertThat(token).isNotBlank();
     }
