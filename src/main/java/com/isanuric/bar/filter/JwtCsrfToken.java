@@ -66,14 +66,20 @@ public class JwtCsrfToken extends OncePerRequestFilter {
             String csrfHeaderToken,
             String csrfCookieToken) throws IOException, ServletException {
 
-        if (ObjectUtils.isEmpty(csrfHeaderToken) ||
-                ObjectUtils.isEmpty(csrfCookieToken) ||
-                !csrfCookieToken.equals(csrfHeaderToken)) {
-
-            accessDeniedHandler.handle(
-                    request,
-                    response,
-                    new AccessDeniedException("CSRF tokens missing or not matching"));
+        if (ObjectUtils.isEmpty(csrfHeaderToken) || ObjectUtils.isEmpty(csrfCookieToken) ) {
+            handleAccessDenied(request, response, "CSRF tokens empty.");
         }
+
+        if (!csrfCookieToken.equals(csrfHeaderToken)) {
+            handleAccessDenied(request, response, "CSRF tokens not matching.");
+        }
+    }
+
+    private void handleAccessDenied(HttpServletRequest request, HttpServletResponse response, String message)
+            throws IOException, ServletException {
+        accessDeniedHandler.handle(
+                request,
+                response,
+                new AccessDeniedException(message));
     }
 }
