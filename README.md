@@ -1,5 +1,9 @@
-# spring-jwt-ldap
+# spring-jwt
 * REST
 * Spring Boot
 * JWT
-* LDAP
+
+
+# Quick Start
+* clone repository
+* run/debug createAndUseJwtToken_success() uit test
