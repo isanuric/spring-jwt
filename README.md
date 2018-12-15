@@ -1,4 +1,4 @@
-# spring-jwt-ldap
+# spring-jwt
 * REST
 * Spring Boot
 * JWT
