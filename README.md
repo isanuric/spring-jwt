@@ -6,4 +6,4 @@
 
 # Quick Start
 * clone repository
-* run/debug createAndUseJwtToken_success() uit test
+* run/debug createAndUseJwtToken_success().
