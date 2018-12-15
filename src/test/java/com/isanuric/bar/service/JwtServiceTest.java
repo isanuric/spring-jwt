@@ -1,11 +1,11 @@
 package com.isanuric.bar.service;
 
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.isanuric.bar.TestBase;
 import org.jose4j.json.internal.json_simple.JSONObject;
-import org.jose4j.lang.JoseException;
 import org.junit.Test;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /*
  * Project: bar

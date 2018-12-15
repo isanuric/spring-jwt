@@ -15,18 +15,4 @@ public class BarApplication {
         SpringApplication.run(BarApplication.class, args);
     }
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public JwtService jwtService() {
-        return new JwtService();
-    }
-
-    @Bean
-    public TestRestTemplate restTemplate() {
-        return new TestRestTemplate();
-    }
 }

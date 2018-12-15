@@ -83,17 +83,11 @@ public class JwtService {
 //                throw new InvalidJwtSignatureException();
                 return null;
             }
-            logger.debug("TESTTTTTTT");
             responsePayloadJSON = (JSONObject) parser.parse(responseJWS.getPayload());
 
-            // workaround for PingID API 4.5 beta
             if (responsePayloadJSON.containsKey("responseBody")) {
                 responsePayloadJSON = (JSONObject) responsePayloadJSON.get("responseBody");
             }
-
-//            if (responsePayloadJSON.get("exp").) {
-//                ;
-//            }
 
         } catch (Exception e) {
             e.printStackTrace();
