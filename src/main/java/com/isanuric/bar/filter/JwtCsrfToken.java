@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -26,7 +27,6 @@ public class JwtCsrfToken extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtCsrfToken.class);
 
-    private static final Set<String> SAFE_METHODS = new HashSet<>(Arrays.asList("GET", "HEAD", "TRACE", "OPTIONS"));
     private final AccessDeniedHandler accessDeniedHandler = new AccessDeniedHandlerImpl();
 
     @Override
@@ -35,37 +35,45 @@ public class JwtCsrfToken extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
 
-        if (csrfTokenIsRequired(request)) {
-            String csrfHeaderToken = request.getHeader("X-CSRF-TOKEN");
-            logger.debug("csrfHeaderToken: {}", csrfHeaderToken);
+        // call next filter to handle authentication/authorization.
+        if (StringUtils.containsAny(request.getMethod(), String.valueOf(Arrays.asList("POST", "DELETE", "PUT")))) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-            String csrfCookieToken = null;
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null) {
-                Optional<Cookie> csrfCookie = Arrays.stream(cookies)
-                        .filter(cookie -> cookie.getName().equals("CSRF-TOKEN"))
-                        .findFirst();
-                if (csrfCookie.isPresent()) {
-                    csrfCookieToken = csrfCookie.get().getValue();
-                }
-            }
+        // check if the csrf token is set.
+        String csrfHeaderToken = request.getHeader("X-CSRF-TOKEN");
+        logger.debug("csrfHeaderToken: {}", csrfHeaderToken);
 
-            if (ObjectUtils.isEmpty(csrfHeaderToken)||
-                    ObjectUtils.isEmpty(csrfCookieToken) ||
-                    !csrfCookieToken.equals(csrfHeaderToken)) {
-
-                accessDeniedHandler.handle(
-                        request,
-                        response,
-                        new AccessDeniedException("CSRF tokens missing or not matching"));
-                return;
+        String csrfCookieToken = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            Optional<Cookie> csrfCookie = Arrays.stream(cookies)
+                    .filter(cookie -> cookie.getName().equals("CSRF-TOKEN"))
+                    .findFirst();
+            if (csrfCookie.isPresent()) {
+                csrfCookieToken = csrfCookie.get().getValue();
             }
         }
+
+        checkCsrf(request, response, csrfHeaderToken, csrfCookieToken);
         filterChain.doFilter(request, response);
     }
 
-    private boolean csrfTokenIsRequired(HttpServletRequest request) {
-        return !SAFE_METHODS.contains(request.getMethod());
-    }
+    private void checkCsrf(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            String csrfHeaderToken,
+            String csrfCookieToken) throws IOException, ServletException {
 
+        if (ObjectUtils.isEmpty(csrfHeaderToken) ||
+                ObjectUtils.isEmpty(csrfCookieToken) ||
+                !csrfCookieToken.equals(csrfHeaderToken)) {
+
+            accessDeniedHandler.handle(
+                    request,
+                    response,
+                    new AccessDeniedException("CSRF tokens missing or not matching"));
+        }
+    }
 }

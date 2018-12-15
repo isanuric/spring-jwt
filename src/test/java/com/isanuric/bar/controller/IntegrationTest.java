@@ -31,7 +31,7 @@ public class IntegrationTest extends TestBase {
     int randomServerPort;
 
     @Test
-    public void secureEntryPoint() throws URISyntaxException {
+    public void createAndUseJwtToken_success() throws URISyntaxException {
 
         // creates jwt token
         String credentials = login(UserService.TEST_USER_01, UserService.TEST_USER_01);
