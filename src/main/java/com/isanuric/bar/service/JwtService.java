@@ -2,7 +2,7 @@ package com.isanuric.bar.service;
 
 /*
  * Project: bar
- * @author ehsan.salmani@ic-consult.de on 17/11/2018.
+ * @author ehsan.salmani
  */
 
 import com.isanuric.bar.utils.Const;

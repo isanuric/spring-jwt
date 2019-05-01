@@ -8,12 +8,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 /*
- * ----------------------------------------------
- * (c) 2018 Copyright iC Consult GmbH
- * <p/>
  * Project: bar
- * @author ehsan.salmani@ic-consult.de on 03/12/2018.
+ * @author ehsan.salmani
  */
+
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override

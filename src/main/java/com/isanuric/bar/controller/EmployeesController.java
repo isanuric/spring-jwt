@@ -10,15 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 /*
  * Project: bar
- * @author ehsan.salmani@ic-consult.de on 16/11/2018.
+ * @author ehsan.salmani
  */
+
 @RestController
-//@RequestMapping("/employee")
 public class EmployeesController {
 
     private final static Logger logger = LoggerFactory.getLogger(EmployeesController.class);
-
-
 
     @PostMapping("/login")
     public String login() { return "index"; }

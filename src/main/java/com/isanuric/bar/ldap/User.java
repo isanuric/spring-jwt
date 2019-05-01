@@ -7,8 +7,9 @@ package com.isanuric.bar.ldap;
 
 /*
  * Project: bar
- * @author  ehsan.salmani@ic-consult.de on 14/11/2018.
+ * @author  ehsan.salmani
  */
+
 //@Entity
 public class User {
 

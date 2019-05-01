@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * (c) 2018 Copyright iC Consult GmbH
  * <p/>
  * Project: bar
- * @author ehsan.salmani@ic-consult.de on 07/12/2018.
+ * @author ehsan.salmani
  */
 public class UserService implements UserDetailsService {
 

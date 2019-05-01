@@ -7,10 +7,6 @@ import com.isanuric.bar.TestBase;
 import org.jose4j.json.internal.json_simple.JSONObject;
 import org.junit.Test;
 
-/*
- * Project: bar
- * @author ehsan.salmani@ic-consult.de on 17/11/2018.
- */
 public class JwtServiceTest extends TestBase {
 
     @Test

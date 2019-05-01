@@ -19,8 +19,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 /*
  * Project: bar
- * @author ehsan.salmani@ic-consult.de on 17/11/2018.
+ * @author ehsan.salmani
  */
+
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private final static Logger logger = LoggerFactory.getLogger(JwtAuthorizationFilter.class);

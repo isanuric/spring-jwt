@@ -16,8 +16,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 /*
  * Project: bar
- * Created by ehsan.salmani@ic-consult.de on 11/11/2018.
+ * Created by ehsan.salmani
  */
+
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final static Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);

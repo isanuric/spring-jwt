@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 /*
  * Project: bar
- * @author ehsan salmani
+ * @author ehsan.salmani
  */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
