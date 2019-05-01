@@ -9,8 +9,9 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 
 /*
  * Project: bar
- * @author ehsan.salmani@ic-consult.de on 25/11/2018.
+ * @author ehsan.salmani
  */
+
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
