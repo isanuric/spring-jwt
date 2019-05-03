@@ -37,7 +37,7 @@ public class IntegrationTest extends TestBase {
         String credentials = login(UserService.TEST_USER_01, UserService.TEST_USER_01);
 
         // use created jwt token to access
-        ResponseEntity<String> response = get("/index", credentials, String.class);
+        ResponseEntity<String> response = executeHttpGetMethod("/index", credentials, String.class);
 
         assertThat(response.getStatusCodeValue()).isEqualTo(200);
         assertThat(response.getBody()).isEqualToIgnoringCase("hallo");
@@ -80,15 +80,25 @@ public class IntegrationTest extends TestBase {
         body.close();
     }
 
-    private  <T> ResponseEntity<T> get(String entryPoint, String token, Class<T> responseType) throws URISyntaxException {
+    /**
+     * Execute the HTTP method to the given URI template, writing the given request entity
+     * to the request, and returns the response as {@link ResponseEntity}.
+     * @param entryPoint
+     * @param token
+     * @param responseType
+     * @param <T>
+     * @return
+     * @throws URISyntaxException
+     */
+    private  <T> ResponseEntity<T> executeHttpGetMethod(String entryPoint, String token, Class<T> responseType) throws URISyntaxException {
 
         HttpHeaders headers = new HttpHeaders();
 
         // add created jwt to authorization header
         headers.add(HttpHeaders.AUTHORIZATION, token);
-        URI index = new URI("http://localhost:" + randomServerPort + "/index/");
+        URI uri = new URI("http://localhost:" + randomServerPort + "/index/");
 
-        return testRestTemplate.exchange(index, GET, new HttpEntity<>(headers), responseType);
+        return testRestTemplate.exchange(uri, GET, new HttpEntity<>(headers), responseType);
     }
 
     private String getToken(ClientHttpResponse response) {

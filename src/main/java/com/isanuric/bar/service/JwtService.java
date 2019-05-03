@@ -26,7 +26,7 @@ public class JwtService {
     private String jwtKey;
 
     @SuppressWarnings("unchecked")
-    public String buildRequestToken(String user) {
+    public String buildJwsToken(String user) {
 
         JsonWebSignature jws = buildRequestHeader();
         JSONObject payload = buildRequestBody(user);
@@ -93,46 +93,6 @@ public class JwtService {
             e.printStackTrace();
         }
         return responsePayloadJSON;
-
-//        JwtConsumer jwtConsumer = new JwtConsumerBuilder()
-//                .setRequireExpirationTime() // the JWT must have an expiration time
-//                .setAllowedClockSkewInSeconds(30) // allow some leeway in validating time based claims to account for clock skew
-//                .setRequireSubject() // the JWT must have a subject claim
-//                .setExpectedIssuer("Issuer") // whom the JWT needs to have been issued by
-//                .setExpectedAudience("Audience") // to whom the JWT is intended for
-//                .setVerificationKey(jwtKey) // verify the signature with the public key
-//                .setJwsAlgorithmConstraints( // only allow the expected signature algorithm(s) in the given context
-//                        new AlgorithmConstraints(ConstraintType.WHITELIST, // which is only RS256 here
-//                                AlgorithmIdentifiers.RSA_USING_SHA256))
-//                .build(); // create the JwtConsumer instance
-//
-//        try
-//        {
-//            //  Validate the JWT and process it to the Claims
-//            JwtClaims jwtClaims = jwtConsumer.processToClaims(jws);
-//            System.out.println("JWT validation succeeded! " + jwtClaims);
-//        }
-//        catch (InvalidJwtException e)
-//        {
-//            // InvalidJwtException will be thrown, if the JWT failed processing or validation in anyway.
-//            // Hopefully with meaningful explanations(s) about what went wrong.
-//            System.out.println("Invalid JWT! " + e);
-//
-//            // Programmatic access to (some) specific reasons for JWT invalidity is also possible
-//            // should you want different error handling behavior for certain conditions.
-//
-//            // Whether or not the JWT has expired being one common reason for invalidity
-//            if (e.hasExpired())
-//            {
-//                System.out.println("JWT expired at " + e.getJwtContext().getJwtClaims().getExpirationTime());
-//            }
-//
-//            // Or maybe the audience was invalid
-//            if (e.hasErrorCode(ErrorCodes.AUDIENCE_INVALID))
-//            {
-//                System.out.println("JWT had wrong audience: " + e.getJwtContext().getJwtClaims().getAudience());
-//            }
-//        }
     }
 
 

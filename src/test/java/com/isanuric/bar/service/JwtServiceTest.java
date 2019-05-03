@@ -11,13 +11,13 @@ public class JwtServiceTest extends TestBase {
 
     @Test
     public void buildRequestBody() {
-        String token = jwtService.buildRequestToken(TESTUSER_01);
+        String token = jwtService.buildJwsToken(TESTUSER_01);
         assertThat(token).isNotBlank();
     }
 
     @Test
     public void validateToken() {
-        JSONObject validatedToken = jwtService.verifyToken(jwtService.buildRequestToken(TESTUSER_01));
+        JSONObject validatedToken = jwtService.verifyToken(jwtService.buildJwsToken(TESTUSER_01));
 
         assertThat(validatedToken).isNotEmpty();
         System.out.println(validatedToken);
