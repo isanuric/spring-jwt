@@ -25,7 +25,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 /*
- * Project: bar
+ * Project: spring-jwt-ldap
  * @author ehsan.salmani
  */
 public class IntegrationTest extends TestBase {
@@ -40,9 +40,9 @@ public class IntegrationTest extends TestBase {
 
 
     @Test
-    public void createAndUseJwtTokenToAccessController_success() {
+    public void createAndUseTokenToAccessController_success() {
 
-        // creates jwt token
+        // creates token
         String csrfToken = UUID.randomUUID().toString();
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("username", TEST_USER_01);
@@ -68,6 +68,21 @@ public class IntegrationTest extends TestBase {
                 .expectBody(String.class).returnResult().getResponseBody().contains("hallo");
     }
 
+    @Test
+    public void secureOne() {
+        webTestClient.get().uri("/one")
+                .exchange()
+                .expectStatus().isUnauthorized()
+                .expectBody(String.class).returnResult().getResponseBody().contains("secure one.");
+    }
+
+    @Test
+    public void errorEndpoint() {
+        webTestClient.get().uri("/error")
+                .exchange()
+                .expectStatus().isOk()
+        .expectBody(String.class).returnResult().getResponseBody().contains("error page");
+    }
 
     // ~ Help methods
     // -----------------------------------------------------------------------------------------------------------------

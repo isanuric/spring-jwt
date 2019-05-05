@@ -1,11 +1,9 @@
 package com.isanuric.bar.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /*
@@ -14,17 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-public class EmployeesController {
+public class UserController {
 
-    private final static Logger logger = LoggerFactory.getLogger(EmployeesController.class);
+    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/login")
     public String login() { return "index"; }
 
     @GetMapping("/index")
     public String password() {
-
         logger.debug("start password");
         return "hallo";
     }
+
+    @GetMapping("/one")
+    public String secureOne() { return "secure one.";}
+
+    @GetMapping("/error")
+    public String errorPage() { return "error page.";}
 }

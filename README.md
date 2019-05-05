@@ -6,7 +6,8 @@
 
 # Quick Start
 * clone repository
-* run/debug createAndUseJwtToken_success().
+* $ mvn clean install
+* run/debug createAndUseTokenToAccessController_success().
 
 **Request:**  
 POST http://localhost:49609/login  

@@ -69,35 +69,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-//        http
-//                .authorizeRequests()
-//                    .antMatchers("/manager/**").hasRole("MANAGERS")
-//                    .antMatchers("/employee/**").hasRole("EMPLOYEES")
-//                    .anyRequest().fullyAuthenticated()
-//
-//                .and()
-//                    .formLogin();
-
-//        http
-//                .cors().disable()
-//                .csrf().disable()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(unauthorizedHandler)
-//
-//                .and()
-//                .authorizeRequests()
-////                .antMatchers(HttpMethod.POST, "/login").permitAll()
-//                .antMatchers("/login").permitAll()
-//                .anyRequest().authenticated()
-//
-//                .and()
-//                // Add our custom JWT security filter
-////                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .addFilter(new CustomAuthenticationFilter(authenticationManager()))
-//                .addFilter(new JwtAuthorizationFilter(authenticationManager()))
-//
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
         http
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
@@ -107,18 +78,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .logout().disable()
                 .authorizeRequests()
-//                .antMatchers( "/index", "/login", "/error").permitAll()
-                .antMatchers(  "/error").permitAll()
-//                .anyRequest().authenticated()
-                .antMatchers("/**").authenticated()
-
+                .antMatchers(   "/error").permitAll()
+                .anyRequest().authenticated()
 
                 .and()
                 .addFilterBefore(new JwtCsrfToken(), CsrfFilter.class)
                 .addFilter(jwtAuthenticationFilter())
                 .addFilter(jwtAuthorizationFilter());
-
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     // ~ Beans
@@ -167,43 +133,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         jwtAuthorizationFilter.setJwtService(jwtService());
         return jwtAuthorizationFilter;
     }
-
-
-
-
-
-
-
-//    @Bean
-//    public CustomUserDetailsService ldapUserDetailsService() {
-//        return new CustomUserDetailsService(passwordEncoder);
-//    }
-//
-//    @Resource
-//    private PasswordEncoder passwordEncoder;
-
-//    /**
-//     * Custom ldap implementation of UserDetailsService
-//     */
-//    @Override
-//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth
-//                .ldapAuthentication()
-//                .userDnPatterns("uid={0},ou=people")
-//                .groupSearchBase("ou=groups")
-//                .contextSource()
-//                .url("ldap://localhost:8389/dc=springframework,dc=org")
-//
-//                .and()
-//                .passwordCompare()
-//                .passwordEncoder(new LdapShaPasswordEncoder())
-//                .passwordAttribute("userPassword");
-//    }
-//
-//    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-//        return source;
-//    }
 }
