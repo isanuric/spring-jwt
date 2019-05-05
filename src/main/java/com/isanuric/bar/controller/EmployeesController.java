@@ -21,12 +21,10 @@ public class EmployeesController {
     @PostMapping("/login")
     public String login() { return "index"; }
 
-//    @JsonView
     @GetMapping("/index")
     public String password() {
 
         logger.debug("start password");
-
         return "hallo";
     }
 }
