@@ -41,7 +41,7 @@ public class UserController {
     @GetMapping("/unsecure/encryption")
     public String encrypt() {
         try {
-            return jwtService.doEncryption();
+            return jwtService.doEncryption("textThatShouldBeEncrypted");
         } catch (JoseException e) {
             e.printStackTrace();
         }

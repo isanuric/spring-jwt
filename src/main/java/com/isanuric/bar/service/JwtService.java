@@ -105,13 +105,13 @@ public class JwtService {
         return responsePayloadJSON;
     }
 
-    public String doEncryption() throws JoseException {
+    public String doEncryption(String payload) throws JoseException {
         Key key = new AesKey(ByteUtil.randomBytes(16));
         JsonWebEncryption jwe = new JsonWebEncryption();
         jwe.setAlgorithmHeaderValue(KeyManagementAlgorithmIdentifiers.A128KW);
         jwe.setEncryptionMethodHeaderParameter(ContentEncryptionAlgorithmIdentifiers.AES_128_CBC_HMAC_SHA_256);
-        jwe.setPayload("testencryption");
         jwe.setKey(key);
+        jwe.setPayload(payload);
 
         return jwe.getCompactSerialization();
     }
