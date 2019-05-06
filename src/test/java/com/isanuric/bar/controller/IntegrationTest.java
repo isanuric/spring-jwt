@@ -58,7 +58,7 @@ public class IntegrationTest extends TestBase {
 
         // expect authorization token
         String authorizationValue = response.getResponseHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-        assertThat(authorizationValue.startsWith("Bearer eyJhbGciOiJIU"));
+        assertThat(authorizationValue.startsWith("Bearer eyJhbGciOiJIU")).isTrue();
 
         // use created jwt token to access the controller
         webTestClient.get().uri("/index")
@@ -70,10 +70,11 @@ public class IntegrationTest extends TestBase {
 
     @Test
     public void secureOne() {
-        webTestClient.get().uri("/one")
+        EntityExchangeResult result =webTestClient.get().uri("/one")
                 .exchange()
                 .expectStatus().isUnauthorized()
-                .expectBody(String.class).returnResult().getResponseBody().contains("secure one.");
+                .expectBody(String.class).returnResult();
+        assertThat(result.getResponseBody().equals("error page.")).isTrue();
     }
 
     @Test
@@ -81,7 +82,7 @@ public class IntegrationTest extends TestBase {
         webTestClient.get().uri("/error")
                 .exchange()
                 .expectStatus().isOk()
-        .expectBody(String.class).returnResult().getResponseBody().contains("error page");
+                .expectBody(String.class).returnResult().getResponseBody().contains("error page");
     }
 
     // ~ Help methods
