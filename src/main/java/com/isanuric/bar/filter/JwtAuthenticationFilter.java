@@ -30,6 +30,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         setAuthenticationManager(authenticationManager);
     }
 
+    /**
+     * If authentication is successful, create a JWS token and add it to AUTHORIZATION header.
+     * The user should use this token to get access in next GET request.
+     *
+     */
     @Override
     protected void successfulAuthentication(
             HttpServletRequest req,
@@ -37,7 +42,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             FilterChain chain,
             Authentication auth) throws IOException, ServletException {
 
-        String token = jwtService.buildJwsToken(auth.getName());
+        String token = jwtService.createJwsToken(auth.getName());
         response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
 
     }

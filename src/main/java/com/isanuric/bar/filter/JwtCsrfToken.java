@@ -2,9 +2,7 @@ package com.isanuric.bar.filter;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -20,7 +18,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /*
- * Project: bar
+ * Project: spring-jwt-ldap
  * @author ehsan.salmani
  */
 public class JwtCsrfToken extends OncePerRequestFilter {
@@ -45,6 +43,16 @@ public class JwtCsrfToken extends OncePerRequestFilter {
         String csrfHeaderToken = request.getHeader("X-CSRF-TOKEN");
         logger.debug("csrfHeaderToken: {}", csrfHeaderToken);
 
+        validateCsrfToken(
+                request,
+                response,
+                csrfHeaderToken,
+                getCsrfCookieValue(request));
+
+        filterChain.doFilter(request, response);
+    }
+
+    private String getCsrfCookieValue(HttpServletRequest request) {
         String csrfCookieToken = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -55,12 +63,10 @@ public class JwtCsrfToken extends OncePerRequestFilter {
                 csrfCookieToken = csrfCookie.get().getValue();
             }
         }
-
-        checkCsrf(request, response, csrfHeaderToken, csrfCookieToken);
-        filterChain.doFilter(request, response);
+        return csrfCookieToken;
     }
 
-    private void checkCsrf(
+    private void validateCsrfToken(
             HttpServletRequest request,
             HttpServletResponse response,
             String csrfHeaderToken,

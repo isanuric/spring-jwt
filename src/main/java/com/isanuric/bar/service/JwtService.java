@@ -22,33 +22,33 @@ public class JwtService {
 
     private final static Logger logger = LoggerFactory.getLogger(JwtService.class);
 
+    private long expirationTime;
+
     @Value("${jwt.key}")
     private String jwtKey;
 
-    @SuppressWarnings("unchecked")
-    public String buildJwsToken(String user) {
+    /**
+     * Creates a JWS token, that can be used as HEADER AUTHORIZATION value.
+     */
+    public String createJwsToken(String user) {
 
         JsonWebSignature jws = buildRequestHeader();
         JSONObject payload = buildRequestBody(user);
         jws.setPayload(payload.toJSONString());
+        jws.setKey(getHmacKey());
 
-        // Set the verification key
-        HmacKey key = new HmacKey(Base64.decode(jwtKey));
-        logger.debug("key: {}", key);
-        jws.setKey(key);
-
-        String jwsCompactSerialization = null;
+        String sigendValue = null;
         try {
-            jwsCompactSerialization = jws.getCompactSerialization();
+            // Sign and produce the JWS Compact Serialization.
+            sigendValue = jws.getCompactSerialization();
         } catch (JoseException e) {
             e.printStackTrace();
         }
 
-        logger.debug("token: {}", jwsCompactSerialization);
-        return jwsCompactSerialization;
+        logger.debug("token: {}", sigendValue);
+        return sigendValue;
     }
 
-    @SuppressWarnings("unchecked")
     public JsonWebSignature buildRequestHeader() {
 
         JsonWebSignature jws = new JsonWebSignature();
@@ -57,16 +57,18 @@ public class JwtService {
         return jws;
     }
 
-    @SuppressWarnings("unchecked")
     public JSONObject buildRequestBody(String user) {
 
         JSONObject payload = new JSONObject();
         payload.put("user", user);
         payload.put("iss", "test");
-        payload.put("exp", Utils.getCurrentTimeStamp() + 1_000_000L);
+        payload.put("exp", Utils.getCurrentTimeStamp() + this.expirationTime);
         return payload;
     }
 
+    /**
+     * Verify AUTHORISATION JWS Token.
+     */
     public JSONObject verifyToken(String jws) {
 
         JSONParser parser = new JSONParser();
@@ -76,12 +78,11 @@ public class JwtService {
 
             JsonWebSignature responseJWS = new JsonWebSignature();
             responseJWS.setCompactSerialization(jws.replace(Const.TOKEN_PREFIX, ""));
-            HmacKey key = new HmacKey(Base64.decode(jwtKey));
+            HmacKey key = getHmacKey();
             responseJWS.setKey(key);
             if (!responseJWS.verifySignature()) {
-                // TODO: 18/11/2018
-//                throw new InvalidJwtSignatureException();
-                return null;
+//                throw new InvalidJwtSignatureException(jws, );
+                throw new Exception();
             }
             responsePayloadJSON = (JSONObject) parser.parse(responseJWS.getPayload());
 
@@ -95,5 +96,17 @@ public class JwtService {
         return responsePayloadJSON;
     }
 
+    /**
+     * Create verification key.
+     */
+    private HmacKey getHmacKey() {
+        HmacKey key = new HmacKey(Base64.decode(this.jwtKey));
+        logger.debug("key: {}", key);
+        return key;
+    }
+
+    public void setExpirationTime(long expirationTime) {
+        this.expirationTime = expirationTime;
+    }
 
 }

@@ -9,6 +9,7 @@ import com.isanuric.bar.service.JwtService;
 import java.security.NoSuchAlgorithmException;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -65,6 +66,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
+//    @Value("#{new Long('${jwt.expiration.time}')}") todo: use application properties
+    private long expirationTime = 1_000_000L;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -77,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .formLogin().disable()
                 .logout().disable()
+
                 .authorizeRequests()
                 .antMatchers(   "/error").permitAll()
                 .anyRequest().authenticated()
@@ -105,6 +110,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public JwtService jwtService() {
+        JwtService jwtService = new JwtService();
+        jwtService.setExpirationTime(expirationTime);
         return new JwtService();
     }
 

@@ -44,7 +44,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        // verify token
+        // If user has an AUTHORIZATION JWS token, try to validate it.
         authorizationToken = authorizationToken.replaceFirst("Bearer ", "");
         String username = jwtService.verifyToken(authorizationToken).toJSONString();
 
