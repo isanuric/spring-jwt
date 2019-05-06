@@ -70,7 +70,7 @@ public class IntegrationTest extends TestBase {
 
     @Test
     public void secureOne() {
-        EntityExchangeResult result =webTestClient.get().uri("/one")
+        EntityExchangeResult result = webTestClient.get().uri("/one")
                 .exchange()
                 .expectStatus().isUnauthorized()
                 .expectBody(String.class).returnResult();
@@ -83,6 +83,16 @@ public class IntegrationTest extends TestBase {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class).returnResult().getResponseBody().contains("error page");
+    }
+
+    @Test
+    public void encrypt() {
+        EntityExchangeResult result = webTestClient.get().uri("/unsecure/encryption")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .returnResult();
+        System.out.println(result);
     }
 
     // ~ Help methods

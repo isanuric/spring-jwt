@@ -5,14 +5,23 @@ package com.isanuric.bar.service;
  * @author ehsan.salmani
  */
 
+import static org.jose4j.jwa.AlgorithmConstraints.ConstraintType.WHITELIST;
+
 import com.isanuric.bar.utils.Const;
 import com.isanuric.bar.utils.Utils;
+import java.security.Key;
 import org.jose4j.base64url.Base64;
 import org.jose4j.json.internal.json_simple.JSONObject;
 import org.jose4j.json.internal.json_simple.parser.JSONParser;
+import org.jose4j.jwa.AlgorithmConstraints;
+import org.jose4j.jwe.ContentEncryptionAlgorithmIdentifiers;
+import org.jose4j.jwe.JsonWebEncryption;
+import org.jose4j.jwe.KeyManagementAlgorithmIdentifiers;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
+import org.jose4j.keys.AesKey;
 import org.jose4j.keys.HmacKey;
+import org.jose4j.lang.ByteUtil;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +103,36 @@ public class JwtService {
             e.printStackTrace();
         }
         return responsePayloadJSON;
+    }
+
+    public String doEncryption() throws JoseException {
+        Key key = new AesKey(ByteUtil.randomBytes(16));
+        JsonWebEncryption jwe = new JsonWebEncryption();
+        jwe.setAlgorithmHeaderValue(KeyManagementAlgorithmIdentifiers.A128KW);
+        jwe.setEncryptionMethodHeaderParameter(ContentEncryptionAlgorithmIdentifiers.AES_128_CBC_HMAC_SHA_256);
+        jwe.setPayload("testencryption");
+        jwe.setKey(key);
+
+        return jwe.getCompactSerialization();
+    }
+
+    public String doDecryption(String serializedJwe) throws JoseException {
+
+        Key key = new AesKey(ByteUtil.randomBytes(16));
+        JsonWebEncryption jwe = new JsonWebEncryption();
+
+        jwe.setAlgorithmConstraints(
+                new AlgorithmConstraints(WHITELIST,
+                KeyManagementAlgorithmIdentifiers.A128KW));
+
+        jwe.setContentEncryptionAlgorithmConstraints(
+                new AlgorithmConstraints(WHITELIST,
+                ContentEncryptionAlgorithmIdentifiers.AES_128_CBC_HMAC_SHA_256));
+
+        jwe.setKey(key);
+        jwe.setCompactSerialization(serializedJwe);
+
+        return jwe.getPayload();
     }
 
     /**
