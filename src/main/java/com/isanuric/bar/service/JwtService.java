@@ -58,22 +58,6 @@ public class JwtService {
         return sigendValue;
     }
 
-    public JsonWebSignature buildRequestHeader() {
-
-        JsonWebSignature jws = new JsonWebSignature();
-        jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.HMAC_SHA256);
-        jws.setHeader("typ", "JWT");
-        return jws;
-    }
-
-    public JSONObject buildRequestBody(String user) {
-
-        JSONObject payload = new JSONObject();
-        payload.put("user", user);
-        payload.put("iss", "test");
-        payload.put("exp", Utils.getCurrentTimeStamp() + this.expirationTime);
-        return payload;
-    }
 
     /**
      * Verify AUTHORISATION JWS Token.
@@ -104,13 +88,12 @@ public class JwtService {
         }
         return responsePayloadJSON;
     }
-
     public String doEncryption(String payload) throws JoseException {
-        Key key = new AesKey(Base64.decode(this.jwtKey));
+
         JsonWebEncryption jwe = new JsonWebEncryption();
         jwe.setAlgorithmHeaderValue(KeyManagementAlgorithmIdentifiers.A256KW);
         jwe.setEncryptionMethodHeaderParameter(ContentEncryptionAlgorithmIdentifiers.AES_128_CBC_HMAC_SHA_256);
-        jwe.setKey(key);
+        jwe.setKey(getAesKey());
         jwe.setPayload(payload);
 
         return jwe.getCompactSerialization();
@@ -118,21 +101,41 @@ public class JwtService {
 
     public String doDecryption(String serializedJwe) throws JoseException {
 
-        Key key = new AesKey(ByteUtil.randomBytes(16));
         JsonWebEncryption jwe = new JsonWebEncryption();
 
         jwe.setAlgorithmConstraints(
                 new AlgorithmConstraints(WHITELIST,
-                KeyManagementAlgorithmIdentifiers.A128KW));
+                KeyManagementAlgorithmIdentifiers.A256KW));
 
         jwe.setContentEncryptionAlgorithmConstraints(
                 new AlgorithmConstraints(WHITELIST,
                 ContentEncryptionAlgorithmIdentifiers.AES_128_CBC_HMAC_SHA_256));
 
-        jwe.setKey(key);
+        jwe.setKey(getAesKey());
         jwe.setCompactSerialization(serializedJwe);
 
         return jwe.getPayload();
+    }
+
+    private Key getAesKey() {
+        return new AesKey(Base64.decode(this.jwtKey));
+    }
+
+    public JsonWebSignature buildRequestHeader() {
+
+        JsonWebSignature jws = new JsonWebSignature();
+        jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.HMAC_SHA256);
+        jws.setHeader("typ", "JWT");
+        return jws;
+    }
+
+    public JSONObject buildRequestBody(String user) {
+
+        JSONObject payload = new JSONObject();
+        payload.put("user", user);
+        payload.put("iss", "test");
+        payload.put("exp", Utils.getCurrentTimeStamp() + this.expirationTime);
+        return payload;
     }
 
     /**

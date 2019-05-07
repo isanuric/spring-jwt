@@ -3,7 +3,6 @@ package com.isanuric.bar.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpMethod.GET;
 
-import com.isanuric.bar.TestBase;
 import com.isanuric.bar.config.SecurityConfig;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,13 +11,16 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.LinkedMultiValueMap;
@@ -28,7 +30,10 @@ import org.springframework.util.MultiValueMap;
  * Project: spring-jwt-ldap
  * @author ehsan.salmani
  */
-public class IntegrationTest extends TestBase {
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class IntegrationTest {
 
     @Autowired
     protected WebTestClient webTestClient;
@@ -118,22 +123,6 @@ public class IntegrationTest extends TestBase {
         body.write(("username=" + username + "&password=" + password).getBytes());
         body.flush();
         body.close();
-    }
-
-    /**
-     * Execute the HTTP method to the given URI template, writing the given request entity to the request, and returns
-     * the response as {@link ResponseEntity}.
-     */
-    private <T> ResponseEntity<T> executeHttpGetMethod(String entryPoint, String token, Class<T> responseType)
-            throws URISyntaxException {
-
-        HttpHeaders headers = new HttpHeaders();
-
-        // add created jwt to authorization header
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        URI uri = new URI("http://localhost:" + randomServerPort + "/index/");
-
-        return testRestTemplate.exchange(uri, GET, new HttpEntity<>(headers), responseType);
     }
 
     private String getToken(ClientHttpResponse response) {
