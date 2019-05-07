@@ -106,9 +106,9 @@ public class JwtService {
     }
 
     public String doEncryption(String payload) throws JoseException {
-        Key key = new AesKey(ByteUtil.randomBytes(16));
+        Key key = new AesKey(Base64.decode(this.jwtKey));
         JsonWebEncryption jwe = new JsonWebEncryption();
-        jwe.setAlgorithmHeaderValue(KeyManagementAlgorithmIdentifiers.A128KW);
+        jwe.setAlgorithmHeaderValue(KeyManagementAlgorithmIdentifiers.A256KW);
         jwe.setEncryptionMethodHeaderParameter(ContentEncryptionAlgorithmIdentifiers.AES_128_CBC_HMAC_SHA_256);
         jwe.setKey(key);
         jwe.setPayload(payload);
