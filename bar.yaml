@@ -5,12 +5,14 @@ metadata:
   labels:
     run: app-bar
 spec:
-- port: 8080
-  targetPort: 80
-  protocol: TCP
-  name: http
-selector:
-  run: app-bar
+  type: NodePort
+  ports:
+  - protocol: TCP
+    nodePort: 30036
+    port: 9090
+    targetPort: 8080
+  selector:
+    run: app-bar
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -31,5 +33,5 @@ spec:
         image: bar:latest
         imagePullPolicy: Never
         ports:
-        - containerPort: 80
+        - containerPort: 8080
 
