@@ -2,12 +2,27 @@
 * REST
 * Spring Boot
 * JWT
+* Docker
+* Minikube
 
 
 # Quick Start
 * clone repository
 * $ mvn clean install
-* run/debug createAndUseTokenToAccessController_success() test:
+
+# Deployment
+## Spring 
+* $ mvn spring-boot:run
+* http://localhost:8080/
+## Docker
+* $ mvn clean install
+* $ docker build -t bar .  
+* $ docker run -p 8080:8080 bar:latest
+* http://localhost:8080/
+## Kubernetes (minikube 14)
+
+## Unit test
+Run/debug createAndUseTokenToAccessController_success() test:
 
 a. The user sends a POST request with an csrf token and a valid credential/principal as body: 
 

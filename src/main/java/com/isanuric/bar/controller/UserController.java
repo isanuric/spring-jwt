@@ -23,12 +23,12 @@ public class UserController {
     private JwtService jwtService;
 
     @PostMapping("/login")
-    public String login() { return "index"; }
+    public String login() { return "login"; }
 
     @GetMapping("/index")
     public String password() {
         logger.debug("start password");
-        return "hallo";
+        return "index";
     }
 
     @GetMapping("/one")
