@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bar
+spec:
+  selector:
+    matchLabels:
+      run: app-bar
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: app-bar
+    spec:
+      containers:
+      - name: bar
+        image: bar:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80

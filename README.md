@@ -17,9 +17,11 @@
 ## Docker
 * $ mvn clean install
 * $ docker build -t bar .  
-* $ docker run -p 8080:8080 bar:latest
+* $ docker run -d -p 8080:8080 bar:latest
 * http://localhost:8080/
-## Kubernetes (minikube 14)
+## Minikube (Kubernetes v1.14.3)
+* $ mvn clean install
+* $ docker build -t bar .  
 
 ## Unit test
 Run/debug createAndUseTokenToAccessController_success() test:
