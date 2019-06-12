@@ -24,8 +24,8 @@
 * $ mvn clean install
 * $ eval $(minikube docker-env)
 * $ docker build -t bar .  
-* $  kubectl apply -f bar.yaml  
-* $ minikube svc bar --url    
+* $ kubectl apply -f bar.yaml  
+* $ minikube service bar --url    
 
 
 ## Unit test

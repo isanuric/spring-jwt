@@ -7,6 +7,7 @@ import com.isanuric.bar.ldap.UserService;
 import com.isanuric.bar.service.CustomUserDetailsService;
 import com.isanuric.bar.service.JwtService;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,8 +18,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -28,8 +27,8 @@ import org.springframework.security.web.csrf.CsrfFilter;
 
 /*
  * Project: bar
- * Created by ehsan.salmani@ic-consult.de on 06/11/2018.
  */
+
 @Configuration
 @EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -66,8 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
-//    @Value("#{new Long('${jwt.expiration.time}')}") todo: use application properties
-    private long expirationTime = 1_000_000L;
+    @Value("${jwt.expiration.time.days}")
+    private long expirationTime;
 
 
     @Override
@@ -106,6 +105,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() throws NoSuchAlgorithmException {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -114,7 +114,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtService jwtService() {
         JwtService jwtService = new JwtService();
-        jwtService.setExpirationTime(expirationTime);
+        jwtService.setExpirationTime(Duration.ofHours(expirationTime).toHours());
         return new JwtService();
     }
 
@@ -129,7 +129,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public UserService userService () { return new UserService(new BCryptPasswordEncoder()); }
+    public UserService userService() {
+        return new UserService(new BCryptPasswordEncoder());
+    }
 
 
     private JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
