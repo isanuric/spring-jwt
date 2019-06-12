@@ -53,7 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private CustomUserDetailsService customUserDetailsService;
 
-
     @Resource
     private PasswordEncoder passwordEncoder;
 
@@ -82,10 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().disable()
 
                 .authorizeRequests()
-                .antMatchers(
-                        "login",
-                        "index",
-                        "/error", "/unsecure/**").permitAll()
+                .antMatchers("login", "index", "/error", "/unsecure/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
