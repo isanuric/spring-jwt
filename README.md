@@ -20,7 +20,7 @@
 * $ docker run -d -p 8080:8080 bar:latest
 * http://localhost:8080/
 ## Minikube (Kubernetes v1.14.3)
-* Download and start latest minikube version https://kubernetes.io/docs/setup/minikube/
+* Download and start latest [minikube](https://kubernetes.io/docs/setup/minikube/) version 
 * $ mvn clean install
 * $ eval $(minikube docker-env)
 * $ docker build -t bar .  
