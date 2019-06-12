@@ -25,7 +25,8 @@
 * $ eval $(minikube docker-env)
 * $ docker build -t bar .  
 * $ kubectl apply -f bar.yaml  
-* $ minikube service bar --url    
+* $ minikube service bar --url  
+* $ click on result and add /index 
 
 
 ## Unit test

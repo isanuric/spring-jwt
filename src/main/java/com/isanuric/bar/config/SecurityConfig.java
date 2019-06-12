@@ -81,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().disable()
 
                 .authorizeRequests()
-                .antMatchers("login", "index", "/error", "/unsecure/**").permitAll()
+                .antMatchers("/login", "/index", "/error", "/unsecure/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

@@ -1,13 +1,10 @@
 package com.isanuric.bar.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpMethod.GET;
 
 import com.isanuric.bar.config.SecurityConfig;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
 import org.junit.Test;
@@ -15,9 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -80,6 +75,15 @@ public class IntegrationTest {
                 .expectStatus().isUnauthorized()
                 .expectBody(String.class).returnResult();
         assertThat(result.getResponseBody().equals("error page.")).isTrue();
+    }
+
+    @Test
+    public void get_index() {
+        EntityExchangeResult result = webTestClient.get().uri("/index")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class).returnResult();
+        assertThat(result.getResponseBody().equals("index")).isTrue();
     }
 
     @Test

@@ -26,7 +26,7 @@ public class UserController {
     public String login() { return "login"; }
 
     @GetMapping("/index")
-    public String password() {
+    public String index() {
         logger.debug("start password");
         return "index";
     }
