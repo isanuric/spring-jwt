@@ -26,7 +26,7 @@
 * $ docker build -t bar .  
 * $ kubectl apply -f bar.yaml  
 * $ minikube service bar --url  
-* $ click on result and add /index 
+* $ click on result of last step and add _/index_ to path: <MINIKUBE-SERVICE-URL:PORT>/index
 
 
 ## Unit test
