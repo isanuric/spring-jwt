@@ -36,8 +36,7 @@ public class IntegrationTest {
     @LocalServerPort
     int randomServerPort;
 
-    public static final String TEST_USER_01 = "testUser01";
-
+    private static final String TEST_USER_01 = "testUser01";
 
     @Test
     public void createAndUseTokenToAccessController_success() {
@@ -69,6 +68,15 @@ public class IntegrationTest {
     }
 
     @Test
+    public void get_index() {
+        EntityExchangeResult result = webTestClient.get().uri("/index")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class).returnResult();
+        assertThat(result.getResponseBody().equals("index")).isTrue();
+    }
+
+    @Test
     public void secureOne() {
         EntityExchangeResult result = webTestClient.get().uri("/one")
                 .exchange()
@@ -77,14 +85,6 @@ public class IntegrationTest {
         assertThat(result.getResponseBody().equals("error page.")).isTrue();
     }
 
-    @Test
-    public void get_index() {
-        EntityExchangeResult result = webTestClient.get().uri("/index")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(String.class).returnResult();
-        assertThat(result.getResponseBody().equals("index")).isTrue();
-    }
 
     @Test
     public void errorEndpoint() {

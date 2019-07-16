@@ -4,14 +4,11 @@ import com.isanuric.bar.filter.JwtAuthenticationFilter;
 import com.isanuric.bar.filter.JwtAuthorizationFilter;
 import com.isanuric.bar.filter.JwtCsrfToken;
 import com.isanuric.bar.ldap.UserService;
-import com.isanuric.bar.service.CustomUserDetailsService;
 import com.isanuric.bar.service.JwtService;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,36 +22,16 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.csrf.CsrfFilter;
 
-/*
- * Project: bar
- */
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String CSRF_COOKIE = "CSRF-TOKEN";
     public static final String CSRF_HEADER = "X-CSRF-TOKEN";
 
-//    @Autowired
-//    private JwtAuthenticationEntryPoint unauthorizedHandler;
-
-//    @Resource
-//    private LdapUserDetailsService ldapUserDetailsService;
-
-//    @Resource
-//    private LdapUserDetailsService ldapUserDetailsService;
-
-
     @Resource
     private UserService userService;
-
-    @Resource
-    private CustomUserDetailsService customUserDetailsService;
-
-    @Resource
-    private PasswordEncoder passwordEncoder;
 
     @Resource
     private AuthenticationEntryPoint authenticationEntryPoint;
@@ -66,7 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${jwt.expiration.time.days}")
     private long expirationTime;
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -90,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(jwtAuthorizationFilter());
     }
 
+
     // ~ Beans
     // -----------------------------------------------------------------------------------------------------------------
     @Bean
@@ -98,7 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() throws NoSuchAlgorithmException {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -112,11 +89,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         JwtService jwtService = new JwtService();
         jwtService.setExpirationTime(Duration.ofHours(expirationTime).toHours());
         return new JwtService();
-    }
-
-    @Bean
-    public TestRestTemplate restTemplate() {
-        return new TestRestTemplate();
     }
 
     @Bean

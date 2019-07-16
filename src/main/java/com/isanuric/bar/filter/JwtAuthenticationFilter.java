@@ -14,10 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/*
- * Project: bar
- * Created by ehsan.salmani
- */
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -40,7 +36,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             HttpServletRequest req,
             HttpServletResponse response,
             FilterChain chain,
-            Authentication auth) throws IOException, ServletException {
+            Authentication auth) {
 
         String token = jwtService.createJwsToken(auth.getName());
         response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);

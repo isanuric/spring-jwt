@@ -21,7 +21,6 @@ import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.keys.AesKey;
 import org.jose4j.keys.HmacKey;
-import org.jose4j.lang.ByteUtil;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,6 +87,7 @@ public class JwtService {
         }
         return responsePayloadJSON;
     }
+
     public String doEncryption(String payload) throws JoseException {
 
         JsonWebEncryption jwe = new JsonWebEncryption();
@@ -105,11 +105,11 @@ public class JwtService {
 
         jwe.setAlgorithmConstraints(
                 new AlgorithmConstraints(WHITELIST,
-                KeyManagementAlgorithmIdentifiers.A256KW));
+                        KeyManagementAlgorithmIdentifiers.A256KW));
 
         jwe.setContentEncryptionAlgorithmConstraints(
                 new AlgorithmConstraints(WHITELIST,
-                ContentEncryptionAlgorithmIdentifiers.AES_128_CBC_HMAC_SHA_256));
+                        ContentEncryptionAlgorithmIdentifiers.AES_128_CBC_HMAC_SHA_256));
 
         jwe.setKey(getAesKey());
         jwe.setCompactSerialization(serializedJwe);
