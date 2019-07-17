@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /*
@@ -22,23 +21,21 @@ public class UserController {
     @Autowired
     private JwtService jwtService;
 
-    @PostMapping("/login")
-    public String login() { return "login"; }
-
     @GetMapping("/index")
     public String index() {
-        logger.debug("start password");
         return "index";
     }
 
     @GetMapping("/one")
-    public String secureOne() { return "secure one.";}
+    public String secureOne() { return "hallo secure.";}
 
 
     @GetMapping("/error")
-    public String errorPage() { return "error page.";}
+    public String errorPage() {
+        return "error page.";
+    }
 
-    @GetMapping("/unsecure/encryption")
+    @GetMapping("/secure")
     public String encrypt() {
         try {
             return jwtService.doEncryption("textThatShouldBeEncrypted");
