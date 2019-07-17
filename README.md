@@ -33,8 +33,8 @@
 * $ click on result of last step and add _/index_ to path: <MINIKUBE-SERVICE-URL:PORT>/index
 
 
-## Unit test
-# Integration test
+# Unit test
+## Integration test
 Run/debug createAndUseTokenToAccessController_success() test:
 
 first step. The user sends a POST request with an csrf token and a valid credential/principal as body: 
