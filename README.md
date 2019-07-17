@@ -10,6 +10,10 @@
 * clone repository
 * $ mvn clean install
 
+# Branches
+* master: main functionality
+* workshop: integration test
+
 # Deployment
 ## Spring 
 * $ mvn spring-boot:run
