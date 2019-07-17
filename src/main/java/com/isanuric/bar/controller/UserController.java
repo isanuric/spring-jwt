@@ -44,4 +44,14 @@ public class UserController {
         }
         return null;
     }
+
+    @GetMapping("/unsecure/encryption")
+    public String unsecure() {
+        try {
+            return jwtService.doEncryption("textThatShouldBeEncrypted");
+        } catch (JoseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
