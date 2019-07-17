@@ -12,7 +12,7 @@
 
 # Branches
 * **branch master:** main functionality.
-* **branch workshop:** integration test for Authorization header.
+* **branch workshop:** integration test for Authorization header. (todo write more test for filters)
 
 # Deployment
 ## Spring 
