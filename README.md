@@ -11,8 +11,8 @@
 * $ mvn clean install
 
 # Branches
-* master: main functionality
-* workshop: integration test
+* **branch master:** main functionality.
+* **branch workshop:** integration test for Authorization header.
 
 # Deployment
 ## Spring 
