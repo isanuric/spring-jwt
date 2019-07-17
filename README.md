@@ -30,9 +30,10 @@
 
 
 ## Unit test
+# Integration test
 Run/debug createAndUseTokenToAccessController_success() test:
 
-a. The user sends a POST request with an csrf token and a valid credential/principal as body: 
+first step. The user sends a POST request with an csrf token and a valid credential/principal as body: 
 
 **Request:**  
 POST http://localhost:49609/login  
@@ -44,11 +45,11 @@ CSRF-TOKEN: [8ae3e96e-8c98-414e-9db1-e027ea034b3a]
 username=testUser01&password=testUser01  
 
 
-b. After successful authentication, the server creates a signed JWT (JWS) and returns it as Authorization Header: 
+second step. After successful authentication, the server creates a signed JWT (JWS) and returns it as Authorization Header: 
  
 **Response:**  
 200 OK OK  
-Authorization: [Bearer eyJhbGciOiJ...syYYikNDrWn34mY]  
+**Authorization: [Bearer eyJhbGciOiJ...syYYikNDrWn34mY]**  
 X-Content-Type-Options: [nosniff]  
 X-XSS-Protection: [1; mode=block]  
 Cache-Control: [no-cache, no-store, max-age=0, must-revalidate]  
