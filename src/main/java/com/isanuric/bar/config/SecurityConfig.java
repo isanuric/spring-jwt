@@ -28,7 +28,6 @@ import org.springframework.security.web.csrf.CsrfFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String CSRF_COOKIE = "CSRF-TOKEN";
-    public static final String CSRF_HEADER = "X-CSRF-TOKEN";
 
     @Resource
     private UserService userService;

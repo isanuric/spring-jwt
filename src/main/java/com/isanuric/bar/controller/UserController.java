@@ -26,6 +26,10 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping("/one")
+    public String secureOne() { return "hallo secure.";}
+
+
     @GetMapping("/error")
     public String errorPage() {
         return "error page.";

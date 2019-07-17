@@ -44,4 +44,5 @@ public class JwtServiceTest {
         assertThat(plainText.equals(jwtService.doDecryption(cipherText))).isTrue();
 
     }
+
 }
