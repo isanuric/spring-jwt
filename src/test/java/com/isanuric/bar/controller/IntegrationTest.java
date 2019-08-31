@@ -7,26 +7,21 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.UUID;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-/*
- * Project: spring-jwt-ldap
- * @author ehsan.salmani
- */
 
-@RunWith(SpringRunner.class)
+@AutoConfigureWebTestClient
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class IntegrationTest {
 
@@ -137,3 +132,7 @@ public class IntegrationTest {
     }
 
 }
+/*
+ * Project: spring-jwt-ldap
+ * @author ehsan.salmani
+ */
